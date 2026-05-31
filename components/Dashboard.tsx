@@ -9,6 +9,12 @@ function pageHref(path: string, semesterId: string) {
   return `${path}?semester=${encodeURIComponent(semesterId)}`;
 }
 
+function paymentTime(value?: string) {
+  if (!value) return 0;
+  const parsed = new Date(value).getTime();
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
 export default function Dashboard({
   summaries,
   summary,
@@ -18,7 +24,10 @@ export default function Dashboard({
 }) {
   const latestPayment = getLatestPaymentTimestamp(summary);
   const proofCount = countProofs(summary);
-  const recentPaidStudents = summary.students.filter((student) => student.status === "paid").slice(0, 5);
+  const recentPaidStudents = summary.students
+    .filter((student) => student.status === "paid")
+    .sort((a, b) => paymentTime(b.payment?.timestamp) - paymentTime(a.payment?.timestamp))
+    .slice(0, 5);
   const recentExpenses = summary.expenses.slice(0, 4);
 
   return (
