@@ -140,7 +140,10 @@ export default function Dashboard({
                 <div className="listRow" key={`${expense.title}-${expense.date}-${index}`}>
                   <div>
                     <strong>{expense.title}</strong>
-                    <span>{formatDate(expense.date)}</span>
+                    <span>
+                      {formatDate(expense.date)}
+                      {expense.category ? ` - ${expense.category}` : ""}
+                    </span>
                   </div>
                   <strong>{formatRupiah(expense.amount)}</strong>
                 </div>

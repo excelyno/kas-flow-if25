@@ -1,6 +1,7 @@
 export type SheetConfig = {
   spreadsheetId: string;
   gid: string;
+  sheetName?: string;
 };
 
 export type SemesterConfig = {
@@ -22,8 +23,9 @@ export const semesters: SemesterConfig[] = [
       gid: "1003816535",
     },
     expenseSheet: {
-      spreadsheetId: "1YVAOxmJOaaSJVbn_dnodAwn2Y-fYw0LnKOE5IlXn-WA",
+      spreadsheetId: "1XnTVkCjF62gXD1gLJ4dr7m8RPci1iZVsiUNTW3thS7s",
       gid: "0",
+      sheetName: "Form Responses 1",
     },
     isActive: true,
   },

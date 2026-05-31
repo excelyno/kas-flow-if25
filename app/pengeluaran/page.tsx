@@ -70,8 +70,13 @@ export default async function PengeluaranPage({ searchParams }: { searchParams?:
             {summary.expenses.map((expense, index) => (
               <article className="ledgerRow" key={`${expense.title}-${expense.date}-${index}`}>
                 <div>
-                  <span>{formatDate(expense.date)}</span>
+                  <span>
+                    {formatDate(expense.date)}
+                    {expense.category ? ` - ${expense.category}` : ""}
+                  </span>
                   <strong>{expense.title}</strong>
+                  {expense.submitter ? <span>Diajukan oleh {expense.submitter}</span> : null}
+                  {expense.note ? <p className="ledgerNote">{expense.note}</p> : null}
                 </div>
                 <div className="ledgerMeta">
                   <strong>{formatRupiah(expense.amount)}</strong>

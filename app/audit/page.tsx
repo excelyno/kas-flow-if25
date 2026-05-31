@@ -8,7 +8,11 @@ export const metadata = {
   title: "Audit - Alur Kas IF25",
 };
 
-function sheetUrl(spreadsheetId: string, gid: string) {
+function sheetUrl(spreadsheetId: string, gid: string, sheetName?: string) {
+  if (sheetName) {
+    return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`;
+  }
+
   return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit#gid=${gid}`;
 }
 
@@ -72,10 +76,26 @@ export default async function AuditPage({ searchParams }: { searchParams?: Semes
             <MetricRow label="Update pembayaran" value={latestPayment ? formatDate(latestPayment) : "Belum ada"} />
           </div>
           <div className="linkStack">
-            <a href={sheetUrl(summary.semester.paymentSheet.spreadsheetId, summary.semester.paymentSheet.gid)} target="_blank" rel="noreferrer">
+            <a
+              href={sheetUrl(
+                summary.semester.paymentSheet.spreadsheetId,
+                summary.semester.paymentSheet.gid,
+                summary.semester.paymentSheet.sheetName,
+              )}
+              target="_blank"
+              rel="noreferrer"
+            >
               Buka sheet pembayaran
             </a>
-            <a href={sheetUrl(summary.semester.expenseSheet.spreadsheetId, summary.semester.expenseSheet.gid)} target="_blank" rel="noreferrer">
+            <a
+              href={sheetUrl(
+                summary.semester.expenseSheet.spreadsheetId,
+                summary.semester.expenseSheet.gid,
+                summary.semester.expenseSheet.sheetName,
+              )}
+              target="_blank"
+              rel="noreferrer"
+            >
               Buka sheet pengeluaran
             </a>
           </div>

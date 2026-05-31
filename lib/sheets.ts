@@ -11,9 +11,12 @@ export type PaymentRecord = {
 export type ExpenseRecord = {
   date: string;
   semester: string;
+  category?: string;
   title: string;
   amount: number;
   proofUrl?: string;
+  submitter?: string;
+  note?: string;
 };
 
 export type SemesterDataset = {
@@ -23,7 +26,11 @@ export type SemesterDataset = {
   errors: string[];
 };
 
-function csvExportUrl(spreadsheetId: string, gid: string): string {
+function csvExportUrl(spreadsheetId: string, gid: string, sheetName?: string): string {
+  if (sheetName) {
+    return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+  }
+
   return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=${gid}`;
 }
 
@@ -107,8 +114,8 @@ function parseAmount(value: string): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-async function fetchCsv(spreadsheetId: string, gid: string): Promise<string> {
-  const response = await fetch(csvExportUrl(spreadsheetId, gid), {
+async function fetchCsv(spreadsheetId: string, gid: string, sheetName?: string): Promise<string> {
+  const response = await fetch(csvExportUrl(spreadsheetId, gid, sheetName), {
     cache: "no-store",
   });
 
@@ -125,7 +132,11 @@ export async function getSemesterDataset(semester: SemesterConfig): Promise<Seme
   let expenses: ExpenseRecord[] = [];
 
   try {
-    const paymentCsv = await fetchCsv(semester.paymentSheet.spreadsheetId, semester.paymentSheet.gid);
+    const paymentCsv = await fetchCsv(
+      semester.paymentSheet.spreadsheetId,
+      semester.paymentSheet.gid,
+      semester.paymentSheet.sheetName,
+    );
     const rows = rowsToObjects(parseCsv(paymentCsv));
     payments = rows
       .map((row) => ({
@@ -141,15 +152,22 @@ export async function getSemesterDataset(semester: SemesterConfig): Promise<Seme
   }
 
   try {
-    const expenseCsv = await fetchCsv(semester.expenseSheet.spreadsheetId, semester.expenseSheet.gid);
+    const expenseCsv = await fetchCsv(
+      semester.expenseSheet.spreadsheetId,
+      semester.expenseSheet.gid,
+      semester.expenseSheet.sheetName,
+    );
     const rows = rowsToObjects(parseCsv(expenseCsv));
     expenses = rows
       .map((row) => ({
-        date: pick(row, ["Tanggal", "Date"]),
+        date: pick(row, ["Tanggal Pengeluaran", "Tanggal", "Date", "Timestamp"]),
         semester: pick(row, ["Semester"]),
-        title: pick(row, ["Keperluan", "Keterangan", "Deskripsi", "Untuk apa"]),
-        amount: parseAmount(pick(row, ["Jumlah", "Nominal", "Amount"])),
-        proofUrl: pick(row, ["Bukti", "Link Bukti", "Bukti Pengeluaran"]),
+        category: pick(row, ["Kategori", "Category"]),
+        title: pick(row, ["Keperluan / Keterangan", "Keperluan", "Keterangan", "Deskripsi", "Untuk apa"]),
+        amount: parseAmount(pick(row, ["Jumlah / Nominal", "Jumlah", "Nominal", "Amount"])),
+        proofUrl: pick(row, ["Link Bukti Pengeluaran", "Bukti", "Link Bukti", "Bukti Pengeluaran"]),
+        submitter: pick(row, ["Pengaju", "Diajukan oleh", "Nama Pengaju"]),
+        note: pick(row, ["Catatan", "Note", "Notes"]),
       }))
       .filter((expense) => expense.title !== "" || expense.amount > 0)
       .filter((expense) => {
