@@ -114,6 +114,11 @@ function parseAmount(value: string): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function extractFirstUrl(value: string): string | undefined {
+  const match = value.match(/https?:\/\/[^\s,]+/);
+  return match?.[0];
+}
+
 async function fetchCsv(spreadsheetId: string, gid: string, sheetName?: string): Promise<string> {
   const response = await fetch(csvExportUrl(spreadsheetId, gid, sheetName), {
     cache: "no-store",
@@ -143,7 +148,7 @@ export async function getSemesterDataset(semester: SemesterConfig): Promise<Seme
         nim: cleanNim(pick(row, ["NIM", "Nomor Induk Mahasiswa"])),
         nameInput: pick(row, ["Nama Lengkap", "Nama", "Name"]),
         timestamp: pick(row, ["Timestamp", "Waktu", "Tanggal"]),
-        proofUrl: pick(row, ["Bukti pembayaran", "Bukti", "Upload bukti", "Link bukti"]),
+        proofUrl: extractFirstUrl(pick(row, ["Bukti pembayaran", "Bukti", "Upload bukti", "Link bukti"])),
         raw: row,
       }))
       .filter((payment) => payment.nim !== "");
@@ -165,7 +170,7 @@ export async function getSemesterDataset(semester: SemesterConfig): Promise<Seme
         category: pick(row, ["Kategori", "Category"]),
         title: pick(row, ["Keperluan / Keterangan", "Keperluan", "Keterangan", "Deskripsi", "Untuk apa"]),
         amount: parseAmount(pick(row, ["Jumlah / Nominal", "Jumlah", "Nominal", "Amount"])),
-        proofUrl: pick(row, ["Link Bukti Pengeluaran", "Bukti", "Link Bukti", "Bukti Pengeluaran"]),
+        proofUrl: extractFirstUrl(pick(row, ["Link Bukti Pengeluaran", "Bukti", "Link Bukti", "Bukti Pengeluaran"])),
         submitter: pick(row, ["Pengaju", "Diajukan oleh", "Nama Pengaju"]),
         note: pick(row, ["Catatan", "Note", "Notes"]),
       }))

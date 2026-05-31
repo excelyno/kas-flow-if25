@@ -98,6 +98,11 @@ export default async function AuditPage({ searchParams }: { searchParams?: Semes
             >
               Buka sheet pengeluaran
             </a>
+            {summary.semester.expenseFormUrl ? (
+              <a href={summary.semester.expenseFormUrl} target="_blank" rel="noreferrer">
+                Buka form pengeluaran
+              </a>
+            ) : null}
           </div>
         </article>
 

@@ -6,7 +6,7 @@ Project ini sudah disiapkan untuk membaca data pengeluaran dari Google Sheet pub
 
 Link hasil generate terakhir:
 
-- Form untuk diisi: https://docs.google.com/forms/d/e/1FAIpQLSe-7ZfUkIWx26KsVNXni8i48lrOxvlwYiiAVoU5pINJzPz5Rw/viewform
+- Form untuk diisi: https://docs.google.com/forms/d/e/1FAIpQLSe-7ZfUkIWx26KsVNXni8i48lrOxvlwYiiAVoU5pINJzPz5Rw/viewform?usp=sharing
 - Form edit: https://docs.google.com/forms/d/1Hvod01k90PnfMBSIfmhzZ0719JbuvXBaa7J3nBBnhTA/edit
 - Response spreadsheet: https://docs.google.com/spreadsheets/d/1XnTVkCjF62gXDlgLJ4dr7m8RPci1iZVsiUNTW3thS7s/edit?usp=sharing
 - Spreadsheet ID: `1XnTVkCjF62gXDlgLJ4dr7m8RPci1iZVsiUNTW3thS7s`
@@ -44,6 +44,7 @@ expenseSheet: {
   gid: "0",
   sheetName: "Form Responses 1",
 },
+expenseFormUrl: "FORM_PUBLIC_URL_DARI_LOG",
 ```
 
 Pastikan response Sheet bisa dibaca publik:
@@ -85,7 +86,7 @@ Form otomatis membuat field berikut:
 - Kategori
 - Keperluan / Keterangan
 - Jumlah / Nominal
-- Link Bukti Pengeluaran
+- Link Bukti Pengeluaran sebagai `File upload`
 - Pengaju
 - Catatan
 
@@ -98,3 +99,22 @@ Parser website saat ini sudah cocok dengan field utama:
 - Bukti
 
 Field kategori, pengaju, dan catatan disimpan di Sheet untuk kebutuhan audit lanjutan.
+
+## Catatan File Upload
+
+Kalau field bukti memakai tipe `File upload`, Google Form akan menyimpan file ke Google Drive dan response Sheet biasanya berisi link file tersebut. Website akan mengambil URL pertama dari cell bukti dan menampilkannya sebagai `Bukti file`.
+
+Supaya link bukti bisa dibuka dari website:
+
+1. Buka Google Form edit.
+2. Masuk ke pertanyaan `Link Bukti Pengeluaran`.
+3. Klik `View folder`.
+4. Di Google Drive, share folder/file bukti ke orang yang boleh melihat laporan.
+
+Untuk transparansi publik, set folder bukti menjadi:
+
+```txt
+Anyone with the link -> Viewer
+```
+
+Perlu dicatat: tipe `File upload` biasanya meminta pengisi form login Google.

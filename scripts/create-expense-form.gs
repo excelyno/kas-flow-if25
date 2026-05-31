@@ -30,7 +30,7 @@ function createExpenseForm() {
   const form = FormApp.create(FORM_TITLE);
 
   form.setDescription(
-    "Form ini dipakai untuk mencatat pengeluaran kas IF25. Isi nominal dengan angka saja, dan sertakan link bukti jika tersedia."
+    "Form ini dipakai untuk mencatat pengeluaran kas IF25. Isi nominal dengan angka saja, dan upload bukti jika tersedia."
   );
   form.setConfirmationMessage("Pengeluaran berhasil dikirim. Data akan dicek oleh bendahara.");
   form.setAllowResponseEdits(true);
@@ -69,15 +69,11 @@ function createExpenseForm() {
     .setValidation(amountValidation)
     .setRequired(true);
 
-  const proofValidation = FormApp.createTextValidation()
-    .requireTextIsUrl()
-    .setHelpText("Tempel link Google Drive atau URL bukti transaksi.")
-    .build();
-
-  form.addTextItem()
+  form.addFileUploadItem()
     .setTitle("Link Bukti Pengeluaran")
-    .setHelpText("Pastikan link bisa dibuka oleh yang punya akses laporan.")
-    .setValidation(proofValidation)
+    .setHelpText("Upload maksimal 1 file. Pastikan folder bukti bisa dibuka oleh yang punya akses laporan.")
+    .setMaxFiles(1)
+    .setMaxFileSize(10)
     .setRequired(false);
 
   form.addTextItem()

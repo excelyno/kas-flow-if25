@@ -10,6 +10,7 @@ export type SemesterConfig = {
   cashAmount: number;
   paymentSheet: SheetConfig;
   expenseSheet: SheetConfig;
+  expenseFormUrl?: string;
   isActive?: boolean;
 };
 
@@ -27,6 +28,7 @@ export const semesters: SemesterConfig[] = [
       gid: "0",
       sheetName: "Form Responses 1",
     },
+    expenseFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLSe-7ZfUkIWx26KsVNXni8i48lrOxvlwYiiAVoU5pINJzPz5Rw/viewform?usp=sharing",
     isActive: true,
   },
 ];
