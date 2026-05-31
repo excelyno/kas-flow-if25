@@ -23,7 +23,7 @@ export const semesters: SemesterConfig[] = [
       gid: "1003816535",
     },
     expenseSheet: {
-      spreadsheetId: "1XnTVkCjF62gXD1gLJ4dr7m8RPci1iZVsiUNTW3thS7s",
+      spreadsheetId: "1XnTVkCjF62gXDlgLJ4dr7m8RPci1iZVsiUNTW3thS7s",
       gid: "0",
       sheetName: "Form Responses 1",
     },

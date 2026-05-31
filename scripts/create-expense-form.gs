@@ -12,6 +12,7 @@
 
 const FORM_TITLE = "Form Pengeluaran Kas IF25";
 const RESPONSE_SHEET_TITLE = "Respon Pengeluaran Kas IF25";
+const CURRENT_RESPONSE_SPREADSHEET_ID = "1XnTVkCjF62gXDlgLJ4dr7m8RPci1iZVsiUNTW3thS7s";
 
 const SEMESTERS = ["Semester 2"];
 
@@ -36,6 +37,7 @@ function createExpenseForm() {
   form.setCollectEmail(false);
   form.setLimitOneResponsePerUser(false);
   form.setDestination(FormApp.DestinationType.SPREADSHEET, spreadsheet.getId());
+  DriveApp.getFileById(spreadsheet.getId()).setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
 
   form.addDateItem()
     .setTitle("Tanggal Pengeluaran")
@@ -92,4 +94,12 @@ function createExpenseForm() {
   Logger.log("Form public URL: " + form.getPublishedUrl());
   Logger.log("Response spreadsheet URL: " + spreadsheet.getUrl());
   Logger.log("Spreadsheet ID untuk config/semesters.ts: " + spreadsheet.getId());
+}
+
+function shareCurrentExpenseSpreadsheet() {
+  DriveApp.getFileById(CURRENT_RESPONSE_SPREADSHEET_ID)
+    .setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+
+  Logger.log("Response spreadsheet sudah diset Anyone with the link -> Viewer.");
+  Logger.log("Response spreadsheet URL: https://docs.google.com/spreadsheets/d/" + CURRENT_RESPONSE_SPREADSHEET_ID + "/edit");
 }
