@@ -22,16 +22,7 @@ export default async function PengeluaranPage({ searchParams }: { searchParams?:
         eyebrow="Pengeluaran"
         title="Uang kas dipakai untuk apa"
         description="Daftar pengeluaran dibuat fokus ke hal yang penting: tanggal, kebutuhan, nominal, dan bukti."
-        action={
-          <div className="headerActions">
-            <SemesterSwitcher summaries={summaries} selectedSemesterId={summary.semester.id} />
-            {summary.semester.expenseFormUrl ? (
-              <a className="button buttonPrimary" href={summary.semester.expenseFormUrl} target="_blank" rel="noreferrer">
-                Tambah pengeluaran
-              </a>
-            ) : null}
-          </div>
-        }
+        action={<SemesterSwitcher summaries={summaries} selectedSemesterId={summary.semester.id} />}
       />
 
       <DataNotice summary={summary} />
